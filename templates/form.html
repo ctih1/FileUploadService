@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap'); /* Inter font */
+    html {
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+        height: 100vh;
+        width: 100vw;
+    }
+    body {
+        background-image: linear-gradient(45deg,rgb(225, 0, 255),50%, rgb(233, 168, 45));
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+        background-repeat: no-repeat;
+        background-size: 110vw, 110vh;
+    }
+
+    p {
+        font-size: 0.5em;
+    }
+
+    input {
+        display: none;
+    }
+
+    .bg-asset {
+        position: absolute;
+        --position: 0px;
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(to bottom right, #ffffff6d 0%, #ffffff9d 50%, #ffffff00 50%, #ffffff00 100%);
+        filter: blur(1px);
+        animation: rotate 2s linear infinite;
+    }
+
+    .bg-div {
+        backdrop-filter: blur(40px);
+    }
+
+    .loading-screen {
+        position: absolute;
+        top: 0px;
+        text-align: center;
+        backdrop-filter: blur(8.1px);
+    }
+
+    .loading-screen-container {
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+        
+    }
+
+    .file-upload {
+        width: 100%;
+        height: 100%;
+    }
+
+    .widget-container {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        align-content: center;
+    }
+    
+    .widget {
+        font-family: 'Inter', sans-serif;
+        color: rgba(255, 255, 255, 0.689);
+        font-size: 4em;
+        padding: 0%;
+        margin: 2%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10%;
+        /* From https://css.glass */
+        background: rgba(255, 255, 255, 0.26);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(8.1px);
+        -webkit-backdrop-filter: blur(8.1px);
+        border: 1px solid rgba(255, 255, 255, 0.69);
+        /* Ty <3 https://www.w3schools.com/howto/howto_css_disable_text_selection.asp */
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+    }
+
+    .widget:hover:disabled {
+        cursor:not-allowed  ;
+    }
+
+    .widget:hover {
+        cursor: pointer;
+    }
+
+    .fx-loader {
+        display: inline-block;
+        width: 89px;
+        height: 89px;
+    }
+    
+    .fx-loader:after {
+        content: "";
+        display: block;
+        width: 1em;
+        height: 1em;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6px solid #fff;
+        border-color: #fff transparent #fff transparent;
+        animation: spin 1.2s cubic-bezier(.55,.07,.58,.92) infinite;
+        box-shadow: 0px 0px 42px 1px rgba(0,0,0,0.025);
+        -webkit-box-shadow: 0px 0px 42px 1px rgba(0,0,0,0.025);
+        -moz-box-shadow: 0px 0px 42px 1px rgba(0,0,0,0.025);
+      }
+
+    @keyframes rotate {
+        from {
+            left: 0;
+            -ms-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        to {
+            -ms-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -webkit-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+            left: 100vw;
+        }
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0.5;
+        }
+      }
+
+      @keyframes spin {
+        from {
+            -ms-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        to {
+            -ms-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -webkit-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+      }
+
+</style>
+
+<html>
+    <head>
+        <title>Upload - _s4hype_</title>
+    </head>
+
+    <body>
+        <div class="loading-screen-container">
+            <div id="loading-screen" class="loading-screen widget">
+                <h1>Processing...</h1>
+                <div class="fx-loader"></div>
+            </div>
+        </div>
+
+        <div id="bg-div" class="bg-effects">
+            <div style="display: none" id="triangle" class="bg-asset"></div>
+        </div>
+        
+        <form id="form" class="file-upload" onsubmit="OnSubmit()" method="POST" action="/endpoint" enctype="multipart/form-data">
+            <div class="widget-container"> 
+                <label id="file-input-container" class="widget">
+                    <input id="file-input" type="file" name="file">
+                    <p id="file-input-text">Select file.</p>
+                </label>
+                <label id="upload-button-container" class="widget">
+                    <input id="upload-button" type="submit" name="Submit">
+                    <p id="upload-button-text">Upload</p>
+                </label>
+            </div>
+        </form>
+</html>
+
+<script>
+    const triangle = document.getElementById("triangle");
+    const background_div = document.getElementById("bg-div");
+    const fileInput = document.getElementById("file-input");
+    const fileInputContainer = document.getElementById("file-input-container");
+    const fileInputText = document.getElementById("file-input-text");
+    const uploadButton = document.getElementById("upload-button");
+    const uploadButtonContainer = document.getElementById("upload-button-container");
+    const uploadButtonText = document.getElementById("upload-button-text");
+    const form = document.getElementById("form");
+    const loader = document.getElementById("loading-screen");
+
+    var selectedFile = null;
+    var _text_ = ""
+    var new_triangle = triangle.cloneNode(true);
+    fileInput.onchange = UpdateFile;
+    loader.style["opacity"] = "0";
+    uploadButton.setAttribute("disabled","disabled");
+    uploadButtonContainer.setAttribute("disabled","disabled");
+    for(i=0; i<(window.innerHeight/42); i++) {
+        console.log("Making `new_triangle`:" + i)
+        new_triangle = triangle.cloneNode(true);
+        new_triangle.style["left"] = "50px;";
+        new_triangle.style["top"] = `${i*40}px`;
+        new_triangle.style["animation-delay"] = `-${i*(Math.random()*300)}ms`;
+        new_triangle.style["display"] = "block";
+        background_div.appendChild(new_triangle);
+        delete new_triangle;
+    }
+
+    function OnSubmit() {
+        loader.style["opacity"] = "1";
+        form.style["opacity"] = "0";
+    }
+
+    function UpdateFile() {
+        selectedFile = fileInput.files[0];
+        if(selectedFile!=null&&selectedFile!=undefined) {
+            uploadButton.removeAttribute("disabled");
+            uploadButtonContainer.removeAttribute("disabled");
+            _text_ = fileInput.files[0]["name"]
+            if(_text_.length>16) {
+                _text_ = _text_.substring(0,16)+"...";
+            }
+            fileInputText.innerHTML = _text_;
+        }
+      }
+</script>
