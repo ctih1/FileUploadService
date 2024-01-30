@@ -1,0 +1,121 @@
+<style>
+    html {
+        width: 25em;
+        height: 40em;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+    * {
+        font-family: 'Inter', sans-serif;
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+    }
+    .card {
+        position: absolute;
+        background-image: url("https://i.pinimg.com/originals/aa/0e/7c/aa0e7c3b1813f8fa5ae009247fe104f8.png");
+        background-position: center;
+        width: 25em;
+        height: 40em;
+        left:0;
+        top:0;
+    }
+
+    .card-content {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .card-text {
+        position: absolute;
+    }
+
+    .text {
+        color: white;
+        opacity: 0.8;
+        text-shadow: 2px 2px 13px rgba(0,0,0,0.74);
+    }
+
+    #number {
+        margin-top: 175px;
+        font-size: 125px;
+    }
+
+    #username {
+        margin-top: 315px;
+        font-size: 33px;
+    }
+
+    #description {
+        font-size: 15px;
+        margin-top: 580px;
+        color: white;
+        opacity: 0.7;
+    }
+
+    #watermark-url {
+        margin-top: 0px;
+        opacity: 0.8;
+    }
+
+
+</style>
+<html>
+    <head>
+        <title>card</title>
+    </head>
+    <body>
+        <div class="card">
+            <div class="card-number card-content">
+                <h1 class="card-text text" id="number">#-1</h1>
+            </div>
+            <div class="card-number card-content">
+                <h3 class="card-text text" id="username">Generating...</h3>
+            </div>
+            <div class="card-description card-content">
+                <h4 style="white-space: pre-line" class="card-text text" id="description">Generating...</h3>
+            </div>
+            <div class="card-number card-content">
+                <h3 class="card-text" id="watermark-url">upload.s4hype.xyz</h1>
+            </div>
+        </div> 
+    </body>
+</html>
+
+<script>
+    var args = new URLSearchParams(window.location.search);
+    
+    var number = args.get("number");
+    var username = args.get("username");
+    var time = args.get("time");
+    var filename = args.get("filename");
+    var sizeMB = args.get("size",0)
+    if(number==null) {
+        number = -1;
+    }
+    if(username==null) {
+        username="No username";
+    }
+    if(time==null) {
+        time=Math.round(Date.now());
+    }
+    if(filename==null) {
+        filename="file.jpg";
+    }
+    if(sizeMB==null) {
+        sizeMB = -1;
+    }
+    var timeFormat = new Date(time);
+    var descriptionText = "";
+    const numberText = document.getElementById("number");
+    const usernameText = document.getElementById("username");
+    const description = document.getElementById("description");
+    var hours = timeFormat.getHours();
+    var minutes = timeFormat.getMinutes();
+
+    numberText.innerHTML = `#${number}`;
+    console.log(username);
+    usernameText.innerHTML = username;
+    descriptionText = `Uploaded '${filename}' that was ${sizeMB}mb \nat ${hours}:${minutes} on ${timeFormat.getDate()}/${timeFormat.getMonth()+1}/${timeFormat.getFullYear()}`;
+    description.innerHTML = descriptionText;
+</script>

@@ -1,3 +1,9 @@
+<style>
+    .variables {
+        display: none;
+    }
+</style>
+
 <!DOCTYPE html>
 
 <html>
@@ -6,6 +12,28 @@
     </head>
 
     <body>
-        <h1>Success!</h1>
+        <h1>Succesfully uploaded!</h1>
+        <iframe id="card" src="C:\\Users\\ctih\\FileUploadService\\templates\\card.html" style="width: 25em; height: 40em;">
     </body>
+    <div class="variables">
+        <p id="number">{number}</p>
+        <p id="username">{username}</p>
+        <p id="time">{time}</p>
+        <p id="filename">{filename}</p>
+        <p id="size">{size}</p>
+    </div>
 </html>
+
+<script>
+    var args = new URLSearchParams(window.location.search);
+    
+    var number = document.getElementById("number").innerHTML;
+    var username = document.getElementById("username").innerHTML;
+    var time = document.getElementById("time").innerHTML;
+    var filename = document.getElementById("filename").innerHTML;
+    var sizeMB = document.getElementById("size").innerHTML;
+
+    const card = document.getElementById("card");
+    card.setAttribute("src",`C:\\Users\\ctih\\FileUploadService\\templates\\card.html?number=${number}&username=${username}&time=${time}&filename=${filename}&size=${sizeMB}`)
+
+</script>
