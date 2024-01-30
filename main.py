@@ -3,10 +3,12 @@ from werkzeug.utils import secure_filename
 import os
 import json
 import time
+s: str
+
 
 app = Flask(__name__)
 
-app.config["UPLOAD_FOLDER"] = r"\upload"
+app.config["UPLOAD_FOLDER"] = r"/upload"
 app.config["MAX_CONTENT_LENGTH"] = 256 * 1024 * 1024 
 
 @app.route("/")
@@ -23,7 +25,7 @@ def endpoint():
         os.makedirs(path,exist_ok=True)
         
         f = request.files["file"]
-        f.save(path+fr"\{secure_filename(f.filename)}")
+        f.save(path+fr"/{secure_filename(f.filename)}")
         
         data["username"] = request.args.get("username",None)
         data["time_uploaded"] = round(time.time())
@@ -31,7 +33,7 @@ def endpoint():
         data["headers"] = list(request.headers)
 
         data["ip6"] = ip
-        with open(path+r"\data.json","w") as f:
+        with open(path+r"/data.json","w") as f:
             json.dump(data,f,indent=2)
         return render_template("success.html")
 
