@@ -2,6 +2,66 @@
     .variables {
         display: none;
     }
+    h1 {
+        margin: 0;
+        margin-bottom: 15px;
+    }
+    * {
+        overflow: hidden;
+    }
+    html {
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+        height: 100vh;
+        width: 100vw;
+    }
+    body {
+        background-image: linear-gradient(45deg,rgb(225, 0, 255),50%, rgb(233, 168, 45));
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+        background-repeat: no-repeat;
+        background-size: 110vw, 110vh;
+    }
+
+    #card {
+        display: inline;
+        height: 640px;
+        width: 350px;
+        border-radius: 15px;
+        overflow: hidden;
+        border-style: none;
+        box-shadow: 0px 0px 22px 12px rgba(0, 0, 0, 0.123);
+        margin-bottom: 15px;
+    }
+
+    main {
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.689);
+        font-size: 4em;
+        padding: 0%;
+        margin: 9%;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        align-items: center;
+        align-content: center;
+        overflow: hidden;
+        /* From https://css.glass */
+        background: rgba(255, 255, 255, 0.26);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(8.1px);
+        -webkit-backdrop-filter: blur(8.1px);
+        border: 1px solid rgba(255, 255, 255, 0.69);
+        /* Ty <3 https://www.w3schools.com/howto/howto_css_disable_text_selection.asp */
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+    }
 </style>
 
 <!DOCTYPE html>
@@ -12,16 +72,20 @@
     </head>
 
     <body>
-        <h1>Succesfully uploaded!</h1>
-        <iframe id="card" src="C:\\Users\\ctih\\FileUploadService\\templates\\card.html" style="width: 25em; height: 40em;">
+        <main>
+            <h1>Succesfully uploaded!</h1>
+            <iframe id="card" src="https://s4hype.xyz/api/card.html"scrolling="no"></iframe>
+
+            <div class="variables">
+                <p id="number">{{number}}</p>
+                <p id="username">{{username}}</p>
+                <p id="time">{{time}}</p>
+                <p id="filename">{{filename}}</p>
+                <p id="size">{{size}}</p> 
+            </div>
+        </main>
     </body>
-    <div class="variables">
-        <p id="number">{number}</p>
-        <p id="username">{username}</p>
-        <p id="time">{time}</p>
-        <p id="filename">{filename}</p>
-        <p id="size">{size}</p>
-    </div>
+
 </html>
 
 <script>
@@ -32,8 +96,9 @@
     var time = document.getElementById("time").innerHTML;
     var filename = document.getElementById("filename").innerHTML;
     var sizeMB = document.getElementById("size").innerHTML;
-
+    console.log(time);
     const card = document.getElementById("card");
-    card.setAttribute("src",`C:\\Users\\ctih\\FileUploadService\\templates\\card.html?number=${number}&username=${username}&time=${time}&filename=${filename}&size=${sizeMB}`)
+    console.log()
+    card.setAttribute("src",`https://s4hype.xyz/api/card.html?number=${number}&username=${username}&time=${time}&filename=${filename}&size=${sizeMB}`)
 
 </script>

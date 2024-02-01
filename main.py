@@ -9,7 +9,7 @@ s: str
 
 app = Flask(__name__)
 
-app.config["UPLOAD_FOLDER"] = r"\upload"
+app.config["UPLOAD_FOLDER"] = r"/upload"
 app.config["MAX_CONTENT_LENGTH"] = 256 * 1024 * 1024 
 
 def add_to_image_counter() -> None:
@@ -39,25 +39,35 @@ def endpoint():
         os.makedirs(path,exist_ok=True)
         f = request.files["file"]
         filename: str = f.filename
-        f.save(path+fr"\{secure_filename(f.filename)}")
-        size: int = os.path.getsize(path+fr"\{secure_filename(f.filename)}")//1000000
+        f.save(path+fr"/{secure_filename(f.filename)}")
+        size: float = round(os.path.getsize(path+fr"/{secure_filename(f.filename)}") / 1000000,4)
         data["username"] = request.args.get("username",None)
+        username: str = data["username"]
         data["time_uploaded"] = round(time.time())
+        time_uploaded: int = data["time_uploaded"]
         data["ip"] = request.environ.get('HTTP_X_FORWARDED_FOR',request.environ.get('HTTP_X_REAL_IP', request.remote_addr))
         data["headers"] = list(request.headers)
-
+            
         data["ip6"] = ip
-        with open(path+r"/data.json","w") as f:
+        with open(path+fr"/{filename.split('.')[:-1][0]}.data.json","w") as f:
             json.dump(data,f,indent=2)
         add_to_image_counter()
+        print(time_uploaded)    
         return render_template(f'success.html',
                                number=get_number(),
-                               username=data["username"],
-                               time=data["time_uploaded"],
+                               username=username,
+                               time=time_uploaded,
                                filename=filename,
                                size=size
                             )
 
     return "Ignorind 'GET' request..."
+
+@app.errorhandler(413)
+def page_not_found(e):
+    #print(e)
+    #print(dir(e))
+    #return render_template(...)
+    return 'Your file is too big. The maximum size is 256mb.\n' + str(e)
 
 app.run("192.168.56.1",5000)
