@@ -70,4 +70,4 @@ def page_not_found(e):
     #return render_template(...)
     return 'Your file is too big. The maximum size is 256mb.\n' + str(e)
 
-app.run("192.168.56.1",5000)
+app.run("192.168.100.45",80)
